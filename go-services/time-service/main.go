@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"time"
-	"net/http"
 	"log"
+	"net/http"
+	"time"
 )
 
 func main() {
 	http.HandleFunc("/time", serveTime)
-	http.HandleFunc("/nanotime", serveNanoTime)	
+	http.HandleFunc("/nanotime", serveNanoTime)
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", nil))
 }
 
