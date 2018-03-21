@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
+	fmt.Printf("Начало работы сервиса time-service: ", time.Now().String())
+	
 	http.HandleFunc("/time", serveTime)
 	http.HandleFunc("/nanotime", serveNanoTime)
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", nil))
