@@ -16,9 +16,11 @@ func main() {
 }
 
 func serveTime(w http.ResponseWriter, r *http.Request) {
+	log.Print("Вызов функции serveTime()")
 	fmt.Fprintln(w, "Текущее время: ", time.Now().String())
 }
 
 func serveNanoTime(w http.ResponseWriter, r *http.Request) {
+	log.Print("Вызов функции serveNanoTime()")
 	fmt.Fprintln(w, "Время UnixNano: ", time.Now().UnixNano())
 }
