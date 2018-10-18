@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: time-service
+  name: time-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: time-service
+  template:
+    metadata:
+      labels:
+        app: time-service
+    spec:
+      containers:
+      - image: ivanporty/time-service
+        name: time-service
+
