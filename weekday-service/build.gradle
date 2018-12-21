@@ -16,3 +16,11 @@ dependencies {
     compile "org.slf4j:slf4j-simple:1.7+"
     compile "com.google.code.gson:gson:2.8+"
 }
+
+// особый способ упаковки сервиса java в контейнер - все библиотеки складываем в "толстый архив" (fat JAR)
+jar {
+    manifest { attributes "Main-Class": "com.porty.k8s.WeekdayService" }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
