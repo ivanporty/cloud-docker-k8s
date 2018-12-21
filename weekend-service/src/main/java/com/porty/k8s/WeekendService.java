@@ -16,8 +16,8 @@ import static spark.Spark.port;
  * Простой сервис на основе Spark/Java, запрашивающий время у сервиса time-service и возвращающий результат - выходной
  * ли день в указанной временной зоне, и какой именно это выходной.
  */
-public class WeekdayService {
-    private static Logger logger = LoggerFactory.getLogger(WeekdayService.class);
+public class WeekendService {
+    private static Logger logger = LoggerFactory.getLogger(WeekendService.class);
 
     public static void main(String[] args) {
         port(5678);
@@ -25,8 +25,8 @@ public class WeekdayService {
         Gson gson = new Gson();
 
         // страна и город для выяснения выходного дня кодируется прямо в пути запроса HTTP
-        // пример: /weekday/Europe/Moscow
-        get("/weekday/:country/:city", (req, res) -> {
+        // пример: /weekend/Europe/Moscow
+        get("/weekend/:country/:city", (req, res) -> {
             ZoneId timeZoneId = ZoneId.of(req.params("country") + "/" + req.params("city"));
             logger.info("Запрошен статус выходного дня для зоны {}", timeZoneId);
 
