@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: weekend-service
+  name: weekend-service
+spec:
+  ports:
+    - port: 5678
+  selector:
+    app: weekend-service
+  type: NodePort

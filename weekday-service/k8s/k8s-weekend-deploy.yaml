@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: weekend-service
+  name: weekend-service
+spec:
+  selector:
+    matchLabels:
+      app: weekend-service
+  template:
+    metadata:
+      labels:
+        app: weekend-service
+    spec:
+      containers:
+        - image: ivanporty/weekend-service:0.1.0
+          name: weekend-service

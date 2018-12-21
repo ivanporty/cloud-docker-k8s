@@ -1,6 +1,8 @@
 package com.porty.k8s;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -15,6 +17,7 @@ import static spark.Spark.port;
  * ли день в указанной временной зоне, и какой именно это выходной.
  */
 public class WeekdayService {
+    private static Logger logger = LoggerFactory.getLogger(WeekdayService.class);
 
     public static void main(String[] args) {
         port(5678);
@@ -25,6 +28,8 @@ public class WeekdayService {
         // пример: /weekday/Europe/Moscow
         get("/weekday/:country/:city", (req, res) -> {
             ZoneId timeZoneId = ZoneId.of(req.params("country") + "/" + req.params("city"));
+            logger.info("Запрошен статус выходного дня для зоны {}", timeZoneId);
+
             DayOfWeek dayOfWeek = LocalDate.now(timeZoneId).getDayOfWeek();
             boolean isWeekend = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
                     .contains(dayOfWeek);
