@@ -1,15 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
+type Time struct {
+	Time     string `json:"time,omitempty"`
+	NanoTime string `json:"nanoTime,omitempty"`
+}
+
 func main() {
-	fmt.Printf("Начало работы сервиса time-service: ", time.Now().String())
-	
+	log.Print("Начало работы сервиса time-service")
+
 	http.HandleFunc("/time", serveTime)
 	http.HandleFunc("/nanotime", serveNanoTime)
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", nil))
@@ -17,10 +23,14 @@ func main() {
 
 func serveTime(w http.ResponseWriter, r *http.Request) {
 	log.Print("Вызов функции serveTime()")
-	fmt.Fprintln(w, "Текущее время: ", time.Now().String())
+	var serverTime Time
+	serverTime.Time = time.Now().String()
+	json.NewEncoder(w).Encode(serverTime)
 }
 
 func serveNanoTime(w http.ResponseWriter, r *http.Request) {
 	log.Print("Вызов функции serveNanoTime()")
-	fmt.Fprintln(w, "Время UnixNano: ", time.Now().UnixNano())
+	var nanoTime Time
+	nanoTime.NanoTime = strconv.FormatInt(time.Now().UnixNano(), 10)
+	json.NewEncoder(w).Encode(nanoTime)
 }
