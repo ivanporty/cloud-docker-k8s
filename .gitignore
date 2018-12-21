@@ -1,0 +1,5 @@
+time-service
+**/.idea/
+**/.gradle/
+**/out/
+**/build/
