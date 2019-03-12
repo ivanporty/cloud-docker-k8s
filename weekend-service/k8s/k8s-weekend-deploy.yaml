@@ -23,4 +23,4 @@ spec:
              initialDelaySeconds: 5
              failureThreshold: 2
              successThreshold: 1
-        - image: ivanporty/weekend-service:0.1.0
+        - image: ivanporty/weekend-service:0.2.0
