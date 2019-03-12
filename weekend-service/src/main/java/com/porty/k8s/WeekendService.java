@@ -10,9 +10,9 @@ import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.EnumSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import static spark.Spark.get;
-import static spark.Spark.port;
+import static spark.Spark.*;
 
 /**
  * Простой сервис на основе Spark/Java, запрашивающий время у микросервиса time-service
@@ -21,6 +21,8 @@ import static spark.Spark.port;
  */
 public class WeekendService {
     private static Logger logger = LoggerFactory.getLogger(WeekendService.class);
+
+    private static AtomicBoolean ready = new AtomicBoolean(false);
 
     public static void main(String[] args) {
         port(5678);
@@ -47,6 +49,21 @@ public class WeekendService {
 
             return new TimeZoneReply(isWeekend, dayOfWeek.name());
         }, gson::toJson);
+
+        // поддержка сигнала о готовности сервиса к работе. Используем встроенный в библиотеку Spark
+        // метод для ожидания готовности сервера к работе, ожидая его в отдельном потоке Thread.
+        get("/ready", (req, res) -> {
+            if (ready.get()) {
+                return "Готов!";
+            } else {
+                throw new IllegalStateException("Не готов!");
+            }
+        });
+        // ожидаем готовности в параллельном потоке.
+        new Thread(() -> {
+            awaitInitialization();
+            ready.set(true);
+        }).start();
     }
 
     // стандартный класс с данными для преобразования результата сервиса в JSON
