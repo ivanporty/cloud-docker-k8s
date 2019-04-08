@@ -14,8 +14,9 @@ spec:
         app: weekend-service
     spec:
       containers:
-        name: weekend-service
-        - readinessProbe:
+      - name: weekend-service
+        image: ivanporty/weekend-service:0.2.0
+        readinessProbe:
              httpGet:
                path: /ready
                port: 5678
@@ -23,4 +24,3 @@ spec:
              initialDelaySeconds: 5
              failureThreshold: 2
              successThreshold: 1
-        - image: ivanporty/weekend-service:0.2.0
