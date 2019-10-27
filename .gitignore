@@ -3,3 +3,4 @@ time-service
 **/.gradle/
 **/out/
 **/build/
+**/.DS_Store

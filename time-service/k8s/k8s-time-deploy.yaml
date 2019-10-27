@@ -1,18 +1,28 @@
+# Версия программного интерфейса Kubernetes
 apiVersion: apps/v1
+# Тип объекта
 kind: Deployment
+# Метаданные нашего объекта, вложенный объект ObjectMeta
 metadata:
+   # список меток самого объекта Deployment
   labels:
     app: time-service
   name: time-service
+# Описание собственно правил развертывания контейнера
+# Вложенный объект DeploymentSpec
 spec:
+  # Количество запущенных отсеков pods для масштабирования
   replicas: 1
   selector:
     matchLabels:
       app: time-service
+   # описание шаблона для создания новых отсеков    
   template:
     metadata:
+      # список меток для нового отсека
       labels:
         app: time-service
+    # непосредственно описание контейнера в отсеке    
     spec:
       containers:
       - image: ivanporty/time-service
