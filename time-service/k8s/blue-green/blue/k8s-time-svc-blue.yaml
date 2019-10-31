@@ -1,0 +1,19 @@
+# Версия программного интерфейса Kubernetes
+apiVersion: v1
+# Тип объекта
+kind: Service
+metadata:
+  labels:
+    app: time-service
+    version: blue
+  name: time-service
+spec:
+  # список портов. Дополнительно можно указать протокол
+  ports:
+  - port: 8080
+  # по этим меткам идет поиск синих отсеков
+  selector:
+    app: time-service
+    version: blue
+  # тип сервиса. В облаке можно использовать LoadBalancer
+  type: NodePort

@@ -1,0 +1,33 @@
+# Версия программного интерфейса Kubernetes
+apiVersion: apps/v1
+# Тип объекта
+kind: Deployment
+# Метаданные нашего объекта, вложенный объект ObjectMeta
+metadata:
+   # список меток зеленого развертывания Deployment
+  labels:
+    app: time-service
+    version: green
+  name: time-service-green
+# Описание собственно правил развертывания контейнера
+# Вложенный объект DeploymentSpec
+spec:
+  # Количество запущенных отсеков pods для масштабирования
+  replicas: 1
+  selector:
+    matchLabels:
+      app: time-service
+      version: green
+   # описание шаблона для создания новых отсеков    
+  template:
+    metadata:
+      # список меток зеленых отсеков
+      labels:
+        app: time-service
+        version: green
+    # старая версия 0.1.0    
+    spec:
+      containers:
+      - image: ivanporty/time-service:0.2.0
+        name: time-service
+
