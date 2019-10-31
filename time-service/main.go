@@ -24,7 +24,7 @@ func main() {
 func serveTime(w http.ResponseWriter, r *http.Request) {
 	log.Print("Вызов функции serveTime()")
 	var serverTime Time
-	serverTime.Time = time.Now().String()
+	serverTime.Time = time.Now().Format("02 Jan 2006")
 	json.NewEncoder(w).Encode(serverTime)
 }
 

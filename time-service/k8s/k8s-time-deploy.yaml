@@ -7,6 +7,9 @@ metadata:
    # список меток самого объекта Deployment
   labels:
     app: time-service
+  # аннотации объекта
+  annotations:
+    owner: ivan.porty@ipsoftware.ru
   name: time-service
 # Описание собственно правил развертывания контейнера
 # Вложенный объект DeploymentSpec
@@ -25,6 +28,6 @@ spec:
     # непосредственно описание контейнера в отсеке    
     spec:
       containers:
-      - image: ivanporty/time-service
+      - image: ivanporty/time-service:0.1.0
         name: time-service
 
