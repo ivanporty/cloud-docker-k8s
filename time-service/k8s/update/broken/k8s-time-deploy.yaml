@@ -10,6 +10,7 @@ metadata:
   # аннотации объекта
   annotations:
     owner: ivan.porty@ipsoftware.ru
+    kubernetes.io/change-cause: Updated version to released 1.0!
   name: time-service
 # Описание собственно правил развертывания контейнера
 # Вложенный объект DeploymentSpec
@@ -27,8 +28,9 @@ spec:
       # список меток для нового отсека
       labels:
         app: time-service
-    # непосредственно описание контейнера в отсеке
+    # обновленная версия контейнера в отсеке    
     spec:
       containers:
-      - image: ivanporty/time-service:0.1.0
+      - image: ivanporty/time-service:1.0.0
         name: time-service
+

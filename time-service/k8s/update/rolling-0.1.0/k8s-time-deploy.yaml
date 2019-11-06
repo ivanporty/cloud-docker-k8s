@@ -13,11 +13,18 @@ metadata:
   name: time-service
 # Описание собственно правил развертывания контейнера
 # Вложенный объект DeploymentSpec
+# Вложенный объект DeploymentSpec
 spec:
   # Количество запущенных отсеков pods для масштабирования
-  replicas: 1
+  replicas: 3
   # максимальное количество редакций (revisions)
   revisionHistoryLimit: 5
+  # стратегия обновления
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 2
   selector:
     matchLabels:
       app: time-service
@@ -27,7 +34,7 @@ spec:
       # список меток для нового отсека
       labels:
         app: time-service
-    # непосредственно описание контейнера в отсеке
+    # обновленная версия контейнера в отсеке    
     spec:
       containers:
       - image: ivanporty/time-service:0.1.0
