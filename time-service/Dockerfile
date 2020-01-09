@@ -1,11 +1,25 @@
 # Собирает образ для контейнера с сервисом получения времени.
-FROM golang:1.9
+FROM golang:1.13 as builder
 
-WORKDIR /opt/go/time-service
+# Изменим рабочую директорию
+WORKDIR /opt/time-service
 
+# Скопируем код программы в файловую систему контейнера
+COPY main.go .
+
+# Соберем программу из исходного кода, в файл time-service
+# Необходимо указать дополнительные флаги сборки Go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o time-service main.go
+
+# вторая ступень - спартанская версия Linux Alpine
+FROM alpine:3.10
+
+# номер порта, используемого контейнером
 EXPOSE 8080
-COPY *.go .
+# Используем такую же рабочую директорию
+WORKDIR /opt/time-service
 
-RUN go build
+# Скопируем собранный бинарный код из первой ступени
+COPY --from=builder /opt/time-service/time-service .
 
-ENTRYPOINT [ "/opt/go/time-service/time-service" ]
+CMD [ "/opt/time-service/time-service" ]
