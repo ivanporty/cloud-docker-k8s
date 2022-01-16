@@ -17,5 +17,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
+    - name: Build the Docker images for Dockerfiles
       run: docker build . --file dockerfile/helloworld/Dockerfile --tag helloworld:$(date +%s)
+      run: docker build . --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop:$(date +%s)
