@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build time-service Docker image
-      run: docker build time-service/ --file Dockerfile --tag time-service
+      run: docker build time-service --file time-service/Dockerfile --tag time-service
