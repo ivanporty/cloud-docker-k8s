@@ -18,6 +18,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build helloworld Dockerfile
-      run: docker build . --file dockerfile/helloworld/Dockerfile --tag helloworld:$(date +%s)
+      run: docker build dockerfile/helloworld --file dockerfile/helloworld/Dockerfile --tag helloworld:$(date +%s)
     - name: Build helloworld-loop Dockerfile 
-      run: docker build . --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop:$(date +%s)
+      run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop:$(date +%s)
