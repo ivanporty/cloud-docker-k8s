@@ -21,3 +21,6 @@ jobs:
       run: docker build dockerfile/helloworld --file dockerfile/helloworld/Dockerfile --tag helloworld:$(date +%s)
     - name: Build helloworld-loop Dockerfile 
       run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop:$(date +%s)
+    - name: Build Go Hello Dockerfile 
+      run: docker build dockerfile/go-hello --file dockerfile/go-hello/Dockerfile --tag go-hello
+      
