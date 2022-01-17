@@ -24,7 +24,7 @@ jobs:
     - name: Build Go Hello Dockerfile and test the image and running Go web server
       run: |
         docker build dockerfile/go-hello --file dockerfile/go-hello/Dockerfile --tag go-hello
-        docker run --name go-hello-test -p 8080:8080 go-hello &
+        docker run --name go-hello-test -d -p 8080:8080 go-hello
         curl localhost:8080
         docker stop go-hello-test
         
