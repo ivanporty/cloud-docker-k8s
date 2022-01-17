@@ -33,6 +33,7 @@ jobs:
         docker build . -t go-hello
         # проверка размера образа
         docker images | grep go-hello
+        docker rm go-hello-test
         docker run --name go-hello-test -d -p 8080:8080 go-hello
         curl localhost:8080
         docker stop go-hello-test 
