@@ -1,5 +1,5 @@
-# первая ступень - компилятор и все необходимое для Go 1.13
-FROM golang:1.13 as builder
+# первая ступень - компилятор и все необходимое для Go 1.17
+FROM golang:1.17 as builder
 
 # Соберем и запустим приложение в этой директории
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY main.go .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o hello-go main.go
 
 # вторая ступень - спартанская версия Linux Alpine
-FROM alpine:3.10
+FROM alpine:3.15
 
 # Используем такую же рабочую директорию
 WORKDIR /app
