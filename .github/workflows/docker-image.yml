@@ -20,7 +20,14 @@ jobs:
     - name: Сборка helloworld Dockerfile
       run: docker build dockerfile/helloworld --file dockerfile/helloworld/Dockerfile --tag helloworld
     - name: Сборка helloworld-loop Dockerfile
-      run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop   
+      run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop
+    - name: Сборка Java Maven Hello Dockerfile и проверка успешного запуска веб-сервера Spring Boot
+      run: |
+        cd dockerfile/java-hello
+        docker build . -t java-hello
+        docker run --name java-hello-test -d -p 8080:8080 java-hello
+        curl localhost:8080
+        docker stop java-hello-test
     - name: Сборка Go Hello Dockerfile и проверка успешного запуска веб-сервера Go
       run: |
         docker build dockerfile/go-hello --file dockerfile/go-hello/Dockerfile --tag go-hello
