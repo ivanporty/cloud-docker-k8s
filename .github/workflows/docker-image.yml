@@ -25,6 +25,7 @@ jobs:
       run: |
         docker build dockerfile/nodejs-hello --file dockerfile/nodejs-hello/Dockerfile --tag nodejs-hello
         docker run --name nodejs-hello-test -d -p 3000:3000 nodejs-hello
+        sleep 2s
         curl localhost:3000
         docker stop nodejs-hello-test      
     - name: Build Go Hello Dockerfile and test the image and running Go web server
