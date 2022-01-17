@@ -19,8 +19,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build helloworld Dockerfile
       run: docker build dockerfile/helloworld --file dockerfile/helloworld/Dockerfile --tag helloworld:$(date +%s)
-    - name: Build helloworld-loop Dockerfile 
+    - name: Build helloworld-loop Dockerfile
       run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop:$(date +%s)
-    - name: Build Go Hello Dockerfile 
-      run: docker build dockerfile/go-hello --file dockerfile/go-hello/Dockerfile --tag go-hello
+    - name: Build Go Hello Dockerfile and test the image and running Go web server
+      run: |
+        docker build dockerfile/go-hello --file dockerfile/go-hello/Dockerfile --tag go-hello
+        docker run --name go-hello-test -d -p 8080:8080 go-hello
+        curl localhost:8080
+        docker stop go-hello-test
+        
       
