@@ -1,4 +1,4 @@
-# базовый образ - npm, node и все остальное для Node.js 12
+# базовый образ - npm, node и все остальное для Node.js 17
 FROM node:17
 
 COPY hello-world.js .
