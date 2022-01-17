@@ -17,17 +17,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build helloworld Dockerfile
+    - name: Сборка helloworld Dockerfile
       run: docker build dockerfile/helloworld --file dockerfile/helloworld/Dockerfile --tag helloworld
-    - name: Build helloworld-loop Dockerfile
+    - name: Сборка helloworld-loop Dockerfile
       run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop   
-    - name: Build Go Hello Dockerfile and test the image and running Go web server
+    - name: Сборка Go Hello Dockerfile и проверка успешного запуска веб-сервера Go
       run: |
         docker build dockerfile/go-hello --file dockerfile/go-hello/Dockerfile --tag go-hello
         docker run --name go-hello-test -d -p 8080:8080 go-hello
         curl localhost:8080
         docker stop go-hello-test 
-    - name: Build Node.js Hello Dockerfile and test the image and running Node web server
+    - name: Многоступенчатая сборка Go Hello Dockerfile и проверка успешного запуска веб-сервера Go
+      run: |
+        cd dockerfile/go-hello-multistage
+        docker build . -t go-hello
+        # проверка размера образа
+        docker images | grep go-hello
+        docker rm go-hello-test
+        docker run --name go-hello-test -d -p 8080:8080 go-hello
+        curl localhost:8080
+        docker stop go-hello-test 
+    - name: Сборка Node.js Hello Dockerfile и проверка успешного запуска веб-сервера Node
       run: |
         docker build dockerfile/nodejs-hello --file dockerfile/nodejs-hello/Dockerfile --tag nodejs-hello
         docker run --name nodejs-hello-test -d -p 3000:3000 nodejs-hello
