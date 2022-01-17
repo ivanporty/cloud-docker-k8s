@@ -27,5 +27,10 @@ jobs:
         docker run --name go-hello-test -d -p 8080:8080 go-hello
         curl localhost:8080
         docker stop go-hello-test
-        
+    - name: Build Node.js Hello Dockerfile and test the image and running Node web server
+      run: |
+        docker build dockerfile/nodejs-hello --file dockerfile/nodejs-hello/Dockerfile --tag nodejs-hello
+        docker run --name nodejs-hello-test -d -p 3000:3000 nodejs-hello
+        curl localhost:3000
+        docker stop nodejs-hello-test        
       
