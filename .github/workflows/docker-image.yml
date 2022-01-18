@@ -75,10 +75,9 @@ jobs:
     - name: Cборка Java Maven Hello с помощью Jib и проверка успешного запуска веб-сервера Spring Boot
       run: |
         cd dockerfile/java-hello
-        mvn jib:dockerBuild
+        mvn clean compile jib:dockerBuild
         docker run --name java-jib-test -d -p 8080:8080 ivanporty/java-hello:0.1.0
         # ожидание запуска JVM и приложения
         sleep 5s
         curl localhost:8080
         docker stop java-jib-test
-        
