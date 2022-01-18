@@ -20,7 +20,16 @@ jobs:
     - name: Сборка helloworld Dockerfile
       run: docker build dockerfile/helloworld --file dockerfile/helloworld/Dockerfile --tag helloworld
     - name: Сборка helloworld-loop Dockerfile
-      run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop   
+      run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop
+    - name: Сборка Java Maven Hello Dockerfile и проверка успешного запуска веб-сервера Spring Boot
+      run: |
+        cd dockerfile/java-hello
+        docker build . -t java-hello
+        docker run --name java-hello-test -d -p 8080:8080 java-hello
+        # ожидание запуска JVM и приложения
+        sleep 5s
+        curl localhost:8080
+        docker stop java-hello-test
     - name: Сборка Go Hello Dockerfile и проверка успешного запуска веб-сервера Go
       run: |
         docker build dockerfile/go-hello --file dockerfile/go-hello/Dockerfile --tag go-hello
@@ -41,7 +50,7 @@ jobs:
       run: |
         docker build dockerfile/nodejs-hello --file dockerfile/nodejs-hello/Dockerfile --tag nodejs-hello
         docker run --name nodejs-hello-test -d -p 3000:3000 nodejs-hello
-        # node server starts slow, give it some time before testing endpoint
+        # сервер node запускается медленно, ожидание запуска
         sleep 2s
         curl localhost:3000
         docker stop nodejs-hello-test           
