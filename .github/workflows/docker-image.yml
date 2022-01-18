@@ -26,6 +26,8 @@ jobs:
         cd dockerfile/java-hello
         docker build . -t java-hello
         docker run --name java-hello-test -d -p 8080:8080 java-hello
+        # ожидание запуска JVM и приложения
+        sleep 5s
         curl localhost:8080
         docker stop java-hello-test
     - name: Сборка Go Hello Dockerfile и проверка успешного запуска веб-сервера Go
@@ -48,7 +50,7 @@ jobs:
       run: |
         docker build dockerfile/nodejs-hello --file dockerfile/nodejs-hello/Dockerfile --tag nodejs-hello
         docker run --name nodejs-hello-test -d -p 3000:3000 nodejs-hello
-        # node server starts slow, give it some time before testing endpoint
+        # сервер node запускается медленно, ожидание запуска
         sleep 2s
         curl localhost:3000
         docker stop nodejs-hello-test           
