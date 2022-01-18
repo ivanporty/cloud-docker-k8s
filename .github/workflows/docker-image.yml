@@ -20,7 +20,7 @@ jobs:
     - name: Сборка helloworld Dockerfile
       run: docker build dockerfile/helloworld --file dockerfile/helloworld/Dockerfile --tag helloworld
     - name: Сборка helloworld-loop Dockerfile
-      run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop
+      run: docker build dockerfile/helloworld-loop --file dockerfile/helloworld-loop/Dockerfile --tag helloworld-loop     
     - name: Сборка Java Maven Hello Dockerfile и проверка успешного запуска веб-сервера Spring Boot
       run: |
         cd dockerfile/java-hello
@@ -30,6 +30,18 @@ jobs:
         sleep 5s
         curl localhost:8080
         docker stop java-hello-test
+    - name: Многоступенчатая сборка Java Maven Hello Dockerfile и проверка успешного запуска веб-сервера Spring Boot
+      run: |
+        cd dockerfile/java-hello
+        docker build . -f Dockerfile-multistage -t java-hello
+        # проверка размера образа
+        docker images | grep java-hello
+        docker rm java-hello-test
+        docker run --name java-hello-test -d -p 8080:8080 java-hello
+        # ожидание запуска JVM и приложения
+        sleep 5s
+        curl localhost:8080
+        docker stop java-hello-test        
     - name: Сборка Go Hello Dockerfile и проверка успешного запуска веб-сервера Go
       run: |
         docker build dockerfile/go-hello --file dockerfile/go-hello/Dockerfile --tag go-hello
@@ -53,5 +65,20 @@ jobs:
         # сервер node запускается медленно, ожидание запуска
         sleep 2s
         curl localhost:3000
-        docker stop nodejs-hello-test           
-      
+        docker stop nodejs-hello-test
+    - name: Установка JDK 11 для использования Maven и Jib
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Cборка Java Maven Hello с помощью Jib и проверка успешного запуска веб-сервера Spring Boot
+      run: |
+        cd dockerfile/java-hello
+        mvn jib:dockerBuild
+        docker run --name java-jib-test -d -p 8080:8080 ivanporty/java-hello:0.1.0
+        # ожидание запуска JVM и приложения
+        sleep 5s
+        curl localhost:8080
+        docker stop java-jib-test
+        
