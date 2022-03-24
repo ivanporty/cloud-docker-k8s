@@ -1,5 +1,5 @@
 # Первая ступень на основе стандартного образа Gradle
-FROM gradle:jdk11 as builder
+FROM gradle:6.9-jdk11 as builder
 
 # Директория для файлов проекта
 WORKDIR weekend-service/
