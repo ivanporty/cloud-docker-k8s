@@ -17,9 +17,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Проверка первых команд kubectl на  minikube
+    - uses: engineerd/setup-kind@v0.5.0
+    - name: Проверка первых команд kubectl на kind
       run: |
-        minikube start --kubernetes-version=v1.23.3
         kubectl config current-context
         kubectl cluster-info
         kubectl get nodes
