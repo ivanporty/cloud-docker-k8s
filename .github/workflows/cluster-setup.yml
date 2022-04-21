@@ -17,8 +17,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Проверка первых команд kubectl
+    - name: Проверка первых команд kubectl на  minikube
       run: |
+        minikube start --kubernetes-version=v1.23.3
         kubectl config current-context
         kubectl cluster-info
         kubectl get nodes
