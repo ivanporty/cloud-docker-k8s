@@ -1,0 +1,24 @@
+name: Настройка кластера K8s
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Проверка первых команд kubectl
+      run: |
+        kubectl config current-context
+        kubectl cluster-info
+        kubectl get nodes
