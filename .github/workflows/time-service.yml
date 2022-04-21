@@ -16,10 +16,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Сборка и тестирование микросервиса time-service (Docker image)
       run: |
-      docker build time-service --file time-service/Dockerfile --tag time-service
-      docker run --name time-service-test -d -p 8080:8080 time-service:0.1.0
-      # проверка точек доступа
-      curl localhost:8080/nanotime
-      curl localhost:8080/time
-      # остановка контейнера
-      docker stop time-service-test
+        docker build time-service --file time-service/Dockerfile --tag time-service
+        docker run --name time-service-test -d -p 8080:8080 time-service:0.1.0
+        # проверка точек доступа
+        curl localhost:8080/nanotime
+        curl localhost:8080/time
+        # остановка контейнера
+        docker stop time-service-test
