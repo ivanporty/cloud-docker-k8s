@@ -1,5 +1,5 @@
 # Собирает образ для контейнера с сервисом получения времени.
-FROM golang:1.13 as builder
+FROM golang:1.18 as builder
 
 # Изменим рабочую директорию
 WORKDIR /opt/time-service
