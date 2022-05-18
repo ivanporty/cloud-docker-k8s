@@ -7,7 +7,7 @@
 Все команды, вызовы `kubectl`, проверка результатов работы, код микросервисов, и упаковка в контейнеры запускаются ежедневно как часть непрерывной сборки (continuous integration, CI), с помощью GitHub Actions. Нажмите на ссылки ниже, чтобы увидеть результаты последних сборок и сам код тестирования для всех команд и примеров, используемых в книге:
 
 * Cборка простых образов контейнеров Docker и их тестирование в терминале (глава 4)
-    * [![Dockerfile CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/docker-image.yml)
+    * [![Dockerfile CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/docker-image.yml)    [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/docker-image.yml)
 
 * Начало работы с Kubernetes, minikube, kubectl (глава 5)
     * [![Настройка кластера K8s](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/cluster-setup.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/cluster-setup.yml)
