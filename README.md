@@ -10,7 +10,7 @@
     * [![Dockerfile CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/docker-image.yml)    [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/docker-image.yml)
 
 * Начало работы с Kubernetes, minikube, kubectl (глава 5)
-    * [![Настройка кластера K8s](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/cluster-setup.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/cluster-setup.yml)
+    * [![Настройка кластера K8s](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/cluster-setup.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/cluster-setup.yml).  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/cluster-setup.yml)
 
 * Код микросервиса `time-service`, сборка в образ контейнера (image), запуск и проверка результатов (глава 5)
     * [![time-service CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/time-service.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/time-service.yml)
