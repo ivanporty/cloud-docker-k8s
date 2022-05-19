@@ -27,3 +27,9 @@ jobs:
         curl localhost:8080/time
         # остановка контейнера
         docker stop time-service-test
+    - name: Запуск микросервиса time-service в локальном кластере minikube
+      run: |
+        cd time-service
+        minikube start
+        kubectl create deployment time-service --image time-service:0.1.0
+        kubectl get pods -o wide
