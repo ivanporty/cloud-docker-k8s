@@ -32,7 +32,7 @@ jobs:
         cd time-service
         minikube start
         kubectl create deployment time-service --image time-service:0.1.0
-        sleep 10s
+        sleep 20s
         kubectl get pods -o wide
         kubectl describe deploy/time-service
         kubectl get rs
