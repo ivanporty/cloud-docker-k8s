@@ -35,5 +35,6 @@ jobs:
     - name: Создание K8s Service YAML на основе шаблона 
       run: |
         kubectl expose deployment time-service --port=8080 --type=NodePort --dry-run=client -o yaml
+        cd time-service/k8s/
         kubectl create -f k8s-time-svc.yaml
         kubectl get services
