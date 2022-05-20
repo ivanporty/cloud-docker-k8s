@@ -31,6 +31,9 @@ jobs:
       run: |
         cd time-service
         minikube start
+        # локальные образы недоступны minikube по умолчанию в GH Actions
+        minikube cache add time-service:0.1.0
+        # развертывание
         kubectl create deployment time-service --image time-service:0.1.0
         sleep 20s
         kubectl get pods -o wide
