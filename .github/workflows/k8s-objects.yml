@@ -1,0 +1,51 @@
+name: Объекты YAML K8s CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Создание K8s Deployment YAML на основе шаблона 
+      run: |
+        # используем легковесный кластер kind для простых тестов
+        kind create cluster
+        kubectl create deployment time-service --image=ivanporty/time-service:0.1.0 --dry-run=client -o yaml > k8s-time-deploy-dry-run.yaml
+        kubectl create -f k8s-time-deploy-dry-run.yaml
+        # ожидание запуска
+        kubectl rollout status deployment/time-service --timeout 60s
+        kubectl get deployments
+        kubectl delete deployment/time-service
+        # развертывание из готового файла
+        cd time-service/k8s/
+        kubectl create -f k8s-time-deploy.yaml
+        kubectl rollout status deployment/time-service --timeout 60s
+        kubectl get deployments
+    - name: Создание K8s Service YAML на основе шаблона 
+      run: |
+        kubectl expose deployment time-service --port=8080 --type=NodePort --dry-run=client -o yaml
+        cd time-service/k8s/
+        kubectl create -f k8s-time-svc.yaml
+        kubectl get services
+    - name: Декларативное и императивное управление
+      run: |
+        cd time-service/
+        kubectl delete -f k8s/
+        kubectl apply -f k8s/
+        kubectl rollout status deployment/time-service --timeout 60s
+        # симуляция обновленного развертывания
+        kubectl create deployment time-service --image=ivanporty/time-service:0.1.0 --dry-run=client -o yaml --replicas=2 > deploy-2-replicas.yaml
+        kubectl apply -f .
+        kubectl rollout status deployment/time-service --timeout 60s
+        kubectl get deploy
