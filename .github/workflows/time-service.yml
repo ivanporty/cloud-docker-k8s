@@ -49,8 +49,9 @@ jobs:
         kubectl get services
         SVC_URL=$(minikube service --url time-service)
         curl $SVC_URL/time
-        # переадресация на порт 9999 (фоновый режим)
+        # переадресация на порт 9999 (фоновый режим, небольшое ожидание)
         kubectl port-forward service/time-service 9999:8080 &
+        sleep 5s
         curl localhost:9999/time
     - name: Проверка журналов микросервиса time-service
       run: |
