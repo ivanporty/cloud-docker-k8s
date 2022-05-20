@@ -63,7 +63,7 @@ jobs:
         kubectl rollout status deployment/time-service --timeout 60s
         kubectl get pods -o wide
         # авто-масштабирование
-        minikube addons enable metrics
+        minikube addons enable metrics-server
         kubectl autoscale deployment/time-service --min=1 --max=3 --cpu-percent=80
     - name: Удаление развертывания и сервиса микросервиса time-service
       run: |
