@@ -19,8 +19,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Создание K8s Deployment YAML на основе шаблона 
       run: |
+        # используем легковесный кластер kind для простых тестов
         kind create cluster
-        kubectl create deployment time-service --image=ivanporty/time-service:0.1.0 --dry-run -o yaml > k8s-time-deploy-dry-run.yaml
+        kubectl create deployment time-service --image=ivanporty/time-service:0.1.0 --dry-run=client -o yaml > k8s-time-deploy-dry-run.yaml
         kubectl create -f k8s-time-deploy-dry-run.yaml
         # ожидание запуска
         kubectl rollout status deployment/time-service --timeout 60s
@@ -31,3 +32,8 @@ jobs:
         kubectl create -f k8s-time-deploy.yaml
         kubectl rollout status deployment/time-service --timeout 60s
         kubectl get deployments
+    - name: Создание K8s Service YAML на основе шаблона 
+      run: |
+        kubectl expose deployment time-service --port=8080 --type=NodePort --dry-run=client -o yaml
+        kubectl create -f k8s-time-svc.yaml
+        kubectl get services
