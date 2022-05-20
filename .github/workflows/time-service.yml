@@ -32,9 +32,12 @@ jobs:
         cd time-service
         minikube start
         kubectl create deployment time-service --image time-service:0.1.0
+        kubectl get pods
+        kubectl get deploy
+        kubectl get rs
         # ожидание запуска
         kubectl rollout status deployment/time-service --timeout 90s
         kubectl get pods -o wide
         # имя отсека и его описание
-        POD=$(kubectl get pod -l app=my-app -o jsonpath="{.items[0].metadata.name}")
+        POD=$(kubectl get pod -l app=time-service -o jsonpath="{.items[0].metadata.name}")
         kubectl describe pod $POD
