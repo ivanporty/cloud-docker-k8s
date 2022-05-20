@@ -47,8 +47,8 @@ jobs:
       run: |
         kubectl expose deployment time-service --port=8080 --type=NodePort
         kubectl get services
-        SVC_URL=$(minikube service --url time-service)
-        curl $SVC_URL/time
+        # получение локального URL - вызывать не будем, так как доступ сильно разнится от реализации
+        minikube service --url time-service
         # переадресация на порт 9999 (фоновый режим, небольшое ожидание)
         kubectl port-forward service/time-service 9999:8080 &
         sleep 5s
