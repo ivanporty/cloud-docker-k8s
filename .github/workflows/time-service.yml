@@ -47,4 +47,5 @@ jobs:
       run: |
         kubectl expose deployment time-service --port=8080 --type=NodePort
         kubectl get services
-        minikube service --url time-service
+        SVC_URL=$(minikube service --url time-service)
+        curl $SVC_URL/time
