@@ -42,9 +42,9 @@ jobs:
       run: |
         cd time-service/
         kubectl delete -f k8s/
-        kubectl create -f k8s/
         kubectl rollout status deployment/time-service --timeout 60s
         kubectl apply -f k8s/
+        kubectl rollout status deployment/time-service --timeout 60s
         # симуляция обновленного развертывания
         kubectl create deployment time-service --image=ivanporty/time-service:0.1.0 --dry-run=client -o yaml --replicas=2 > deploy-2-replicas.yaml
         kubectl apply -f .
