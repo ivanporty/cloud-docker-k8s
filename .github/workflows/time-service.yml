@@ -38,7 +38,13 @@ jobs:
         # ожидание запуска
         kubectl rollout status deployment/time-service --timeout 60s
         kubectl get pods -o wide
-        kubectl get events
         # имя отсека и его описание
         POD=$(kubectl get pod -l app=time-service -o jsonpath="{.items[0].metadata.name}")
         kubectl describe pod $POD
+        # вариант отладки
+        kubectl get events
+    - name: Проверка сервисов микросервиса time-service в локальном кластере minikube
+      run: |
+        kubectl expose deployment time-service --port=8080 --type=NodePort
+        kubectl get services
+        minikube service --url time-service
