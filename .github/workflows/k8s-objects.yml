@@ -1,0 +1,33 @@
+name: Объекты YAML K8s CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Создание K8s Deployment YAML на основе шаблона 
+      run: |
+        kind create cluster
+        kubectl create deployment time-service --image=ivanporty/time-service:0.1.0 --dry-run -o yaml > k8s-time-deploy-dry-run.yaml
+        kubectl create -f k8s-time-deploy-dry-run.yaml
+        # ожидание запуска
+        kubectl rollout status deployment/time-service --timeout 60s
+        kubectl get deployments
+        kubectl delete deployment/time-service
+        # развертывание из готового файла
+        cd k8s
+        kubectl create -f k8s-time-deploy.yaml
+        kubectl rollout status deployment/time-service --timeout 60s
+        kubectl get deployments
