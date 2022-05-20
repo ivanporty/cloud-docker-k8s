@@ -27,7 +27,7 @@ jobs:
         kubectl get deployments
         kubectl delete deployment/time-service
         # развертывание из готового файла
-        cd k8s
+        cd time-service/k8s/
         kubectl create -f k8s-time-deploy.yaml
         kubectl rollout status deployment/time-service --timeout 60s
         kubectl get deployments
