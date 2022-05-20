@@ -42,7 +42,6 @@ jobs:
       run: |
         cd time-service/
         kubectl delete -f k8s/
-        kubectl rollout status deployment/time-service --timeout 60s
         kubectl apply -f k8s/
         kubectl rollout status deployment/time-service --timeout 60s
         # симуляция обновленного развертывания
