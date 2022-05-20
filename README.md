@@ -12,5 +12,8 @@
 * Начало работы с Kubernetes, minikube, kubectl (глава 5)
     * [![Настройка кластера K8s](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/cluster-setup.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/cluster-setup.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/cluster-setup.yml)
 
-* Код микросервиса `time-service`, сборка в образ контейнера (image), запуск и проверка результатов (глава 5)
+* Код микросервиса `time-service`, сборка в образ контейнера (image), запуск, развертывание в кластере minikube, доступ в кластер, масштабирование, и проверка результатов (глава 5)
     * [![time-service CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/time-service.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/time-service.yml)   [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/time-service.yml) 
+
+* Непрерывная сборка и проверка объектов YAML для микросервиса time-service в локальном кластере (Глава 6)
+    * [![Объекты YAML K8s CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-objects.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-objects.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/k8s-objects.yml) 
