@@ -24,6 +24,9 @@ jobs:
         cd time-service
         kubectl apply -f k8s/
         kubectl rollout status deployment/time-service --timeout 60s
-        # проверка доступа DNS через команды busybox
-        kubectl run busybox --image=busybox
+        # проверка доступа DNS через команды busybox (tail для постоянной работы)
+        kubectl run busybox --image=busybox -- tail -f /dev/null
         kubectl exec busybox -- wget time-service:8080/time -O -
+        kubectl exec busybox -- wget time-service.default.svc.cluster.local:8080/nanotime -O -
+        # переменные окружения
+        kubectl exec busybox -- env
