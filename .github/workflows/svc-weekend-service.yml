@@ -39,5 +39,16 @@ jobs:
         docker build . -t ivanporty/weekend-service:0.1.0
         # вместо jib - не отправляет образ в удаленный репозиторий
         ./gradlew jibDockerBuild --image=ivanporty/weekend-service:0.1.0
+        # взаимодействие двух сервисов Kubernetes
+        kubectl apply -f k8s/
+        kubectl rollout status deployment/weekend-service --timeout 60s
+        kubectl get deploy
+        kubectl get svc
+        # вызов weekend-service через порт сервиса
+        kubectl port-forward deploy/weekend-service 5678 &
+        curl 0.0.0.0:5678/weekend/Europe/Moscow
+        curl 0.0.0.0:5678/weekend/Asia/Tokyo
+        kubectl logs deploy/weekend-service
+
 
 
