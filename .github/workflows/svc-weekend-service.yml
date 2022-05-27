@@ -33,3 +33,23 @@ jobs:
         kubectl exec busybox -- env 
         # выбор отсеков по меткам
         kubectl get pods --selector=app=time-service
+    - name: Сборка и тесты сервиса weekend-service 
+      run: |
+        cd weekend-service
+        docker build . -t ivanporty/weekend-service:0.1.0
+        # вместо jib - не отправляет образ в удаленный репозиторий
+        ./gradlew jibDockerBuild --image=ivanporty/weekend-service:0.1.0
+        # взаимодействие двух сервисов Kubernetes
+        kubectl apply -f k8s/
+        kubectl rollout status deployment/weekend-service --timeout 60s
+        kubectl get deploy
+        kubectl get svc
+        # вызов weekend-service через порт сервиса (фоновый режим, небольшое ожидание)
+        kubectl port-forward deploy/weekend-service 5678 &
+        sleep 5s
+        curl 0.0.0.0:5678/weekend/Europe/Moscow
+        curl 0.0.0.0:5678/weekend/Asia/Tokyo
+        kubectl logs deploy/weekend-service
+
+
+
