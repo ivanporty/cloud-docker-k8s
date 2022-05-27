@@ -1,0 +1,29 @@
+name: Сервисы K8s, weekend-service CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Проверка доступности time-service на основе DNS 
+      run: |
+        # используем легковесный кластер kind для простых тестов
+        kind create cluster
+        cd time-service
+        kubectl apply -f k8s/
+        kubectl rollout status deployment/time-service --timeout 60s
+        # проверка доступа DNS через команды busybox
+        kubectl run busybox --image=busybox
+        kubectl exec busybox -- wget time-service:8080/time -O -
