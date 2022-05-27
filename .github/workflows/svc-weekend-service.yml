@@ -26,7 +26,7 @@ jobs:
         kubectl rollout status deployment/time-service --timeout 60s
         # проверка доступа DNS через команды busybox (tail для постоянной работы)
         kubectl run busybox --image=busybox -- tail -f /dev/null
-        sleep 1s
+        kubectl wait --for=condition=ready pod/busybox
         kubectl get po
         kubectl exec busybox -- wget time-service:8080/time -O -
         kubectl exec busybox -- wget time-service.default.svc.cluster.local:8080/nanotime -O -
