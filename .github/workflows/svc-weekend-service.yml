@@ -35,8 +35,9 @@ jobs:
         kubectl get pods --selector=app=time-service
     - name: Сборка и тесты сервиса weekend-service 
       run: |
+        cd weekend-service
         docker build . -t ivanporty/weekend-service:0.1.0
         # вместо jib - не отправляет образ в удаленный репозиторий
         ./gradlew jibDockerBuild --image=ivanporty/weekend-service:0.1.0
-        
+
 
