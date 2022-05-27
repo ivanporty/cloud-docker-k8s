@@ -17,3 +17,6 @@
 
 * Непрерывная сборка и проверка объектов YAML для микросервиса time-service в локальном кластере (Глава 6)
     * [![Объекты YAML K8s CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-objects.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-objects.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/k8s-objects.yml) 
+
+* Cборка и проверка микросервиса `weekend-service`, развертывание в локальном кластере, взаимодействие 2х микросервисов (Глава 7)
+    * [![Сервисы K8s, weekend-service CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/svc-weekend-service.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/svc-weekend-service.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/svc-weekend-service.yml) 
