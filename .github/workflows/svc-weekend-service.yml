@@ -50,6 +50,16 @@ jobs:
         curl 0.0.0.0:5678/weekend/Europe/Moscow
         curl 0.0.0.0:5678/weekend/Asia/Tokyo
         kubectl logs deploy/weekend-service
+    - name: Проверка готовности сервиса weekend-service 
+      run: |
+        cd weekend-service      
+        kubectl apply -f k8s/
+        kubectl rollout status deployment/weekend-service --timeout 60s
+        # вызов weekend-service через порт сервиса (фоновый режим, небольшое ожидание)
+        kubectl port-forward deploy/weekend-service 5678 &
+        sleep 5s
+        curl 0.0.0.0:5678/ready
+        kubectl logs deploy/weekend-service          
 
 
 
