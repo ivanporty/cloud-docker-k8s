@@ -21,7 +21,8 @@ jobs:
       run: |
         # используем легковесный кластер kind для простых тестов
         kind create cluster
-        # развертывание time-service, в том числе канареечный выпуск
+        # развертывание time-service, в том числе канареечный 
+        cd time-service
         kubectl apply -f k8s/
         kubectl apply -f k8s/canary/
         # ожидание запуска
