@@ -19,12 +19,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: Канареечное развертывание на основе меток и множества экземпляров
       run: |
+        cd time-service
         # используем легковесный кластер kind для простых тестов
         kind create cluster
         # новая версия time-service
         docker build . -t time-service:0.2.0
         # развертывание time-service, в том числе канареечный 
-        cd time-service
         kubectl apply -f k8s/
         kubectl apply -f k8s/canary/
         # ожидание запуска
