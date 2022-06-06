@@ -21,12 +21,15 @@ jobs:
       run: |
         # используем легковесный кластер kind для простых тестов
         kind create cluster
+        # новая версия time-service
+        docker build . -t time-service:0.2.0
         # развертывание time-service, в том числе канареечный 
         cd time-service
         kubectl apply -f k8s/
         kubectl apply -f k8s/canary/
         # ожидание запуска
         kubectl rollout status deployment/time-service --timeout 60s
+        kubectl rollout status deployment/time-service-canary --timeout 60s
         # переадресация порта (фоновый режим, небольшое ожидание)
         kubectl port-forward service/time-service 8080 &
         sleep 5s

@@ -24,7 +24,9 @@ func main() {
 func serveTime(w http.ResponseWriter, r *http.Request) {
 	log.Print("Вызов функции serveTime()")
 	var serverTime Time
-	// закомментируйте эту строку, чтобы собрать версию сервиса 0.1.0
+	// используйте этот код, чтобы собрать версию сервиса 0.1.0
+	// serverTime.Time = time.Now().String()
+	// новый формат времени для версии 0.2.0
 	serverTime.Time = time.Now().Format("02 Jan 2006")
 	json.NewEncoder(w).Encode(serverTime)
 }
