@@ -17,10 +17,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Создание K8s Deployment YAML на основе шаблона 
+    - name: Канареечное развертывание на основе меток и множества экземпляров
       run: |
         # используем легковесный кластер kind для простых тестов
         kind create cluster
+        # развертывание time-service, в том числе канареечный выпуск
         kubectl apply -f k8s/
         kubectl apply -f k8s/canary/
         # ожидание запуска
