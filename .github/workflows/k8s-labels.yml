@@ -1,0 +1,35 @@
+name: Метки и аннотации K8s CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Создание K8s Deployment YAML на основе шаблона 
+      run: |
+        # используем легковесный кластер kind для простых тестов
+        kind create cluster
+        kubectl apply -f k8s/
+        kubectl apply -f k8s/canary/
+        # ожидание запуска
+        kubectl rollout status deployment/time-service --timeout 60s
+        # переадресация порта (фоновый режим, небольшое ожидание)
+        kubectl port-forward service/time-service 8080 &
+        sleep 5s
+        # запрос сервиса 7 раз, вызывается и канареечный выпуск, и обычный
+        for i in {1..7}
+        do
+          curl 0.0.0.0:8080/time; sleep 1;
+        done
