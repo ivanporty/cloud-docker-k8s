@@ -82,6 +82,6 @@ jobs:
         # вывод отсека из развертывания для отладки
         POD=$(kubectl get pod -l app=time-service,release=canary -o jsonpath="{.items[0].metadata.name}")
         kubectl label pod $POD debug=true app-
-        POD=$(kubectl get pod -l app=debug=true,release=canary -o jsonpath="{.items[0].metadata.name}")
+        POD=$(kubectl get pod -l debug=true,release=canary -o jsonpath="{.items[0].metadata.name}")
         kubectl describe $POD
         kubectl get pods
