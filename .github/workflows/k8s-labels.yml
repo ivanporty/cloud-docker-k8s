@@ -58,3 +58,13 @@ jobs:
         do
           curl -sS 0.0.0.0:8081/time; sleep 1;
         done
+        # переключение на зеленую версию
+        kubectl apply -f k8s/blue-green/green/k8s-time-svc-green.yaml 
+        # переадресация порта на свободный 8082
+        kubectl port-forward service/time-service 8082:8080 &
+        sleep 5s
+        # теперь текущая версия - зеленая
+        for i in {1..7}
+        do
+          curl -sS 0.0.0.0:8082/time; sleep 1;
+        done
