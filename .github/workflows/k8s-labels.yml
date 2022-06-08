@@ -22,8 +22,8 @@ jobs:
         cd time-service
         # используем легковесный кластер kind для простых тестов
         kind create cluster
-        # новая версия time-service
-        docker build . -t time-service:0.2.0
+        # новаяv версия time-service - заново собирать не обязательно, так как сборка проверяется в time-service CI
+        # docker build . -t time-service:0.2.0
         # развертывание time-service, в том числе канареечный 
         kubectl apply -f k8s/
         kubectl apply -f k8s/canary/
@@ -50,6 +50,9 @@ jobs:
         # зеленое развертывание
         kubectl apply -f k8s/blue-green/green/k8s-time-deploy-green.yaml 
         kubectl rollout status deployment/time-service-green --timeout 60s
+        # переадресация порта заново - при удалении сервиса переадресация закончилась
+        kubectl port-forward service/time-service 8080 &
+        sleep 5s
         # текущая версия - синяя
         for i in {1..7}
         do
