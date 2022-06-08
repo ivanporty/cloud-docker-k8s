@@ -77,11 +77,10 @@ jobs:
         do
           curl -sS 0.0.0.0:8083/time; sleep 1;
         done
-    - name: Сине-зеленое развертывание на основе меток
+    - name: Вывод отсека из развертывания для отладки
       run: |
-        # вывод отсека из развертывания для отладки
         POD=$(kubectl get pod -l app=time-service,release=canary -o jsonpath="{.items[0].metadata.name}")
         kubectl label pod $POD debug=true app-
         POD=$(kubectl get pod -l debug=true,release=canary -o jsonpath="{.items[0].metadata.name}")
-        kubectl describe $POD
+        kubectl describe pod/$POD
         kubectl get pods
