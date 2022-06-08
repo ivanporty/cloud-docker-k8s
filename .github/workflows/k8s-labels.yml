@@ -36,10 +36,11 @@ jobs:
         # запрос сервиса 7 раз, вызывается или канареечный выпуск, или обычный (сетевое соединение стабильно)
         for i in {1..7}
         do
-          curl -s 0.0.0.0:8080/time; sleep 1;
+          curl -sS 0.0.0.0:8080/time; sleep 1;
         done
     - name: Сине-зеленое развертывание на основе меток
       run: |
+        cd time-service
         # удалим предыдушие варианты time-service
         kubectl delete deploy/time-service
         kubectl delete svc/time-service
@@ -52,5 +53,5 @@ jobs:
         # текущая версия - синяя
         for i in {1..7}
         do
-          curl -s 0.0.0.0:8080/time; sleep 1;
+          curl -sS 0.0.0.0:8080/time; sleep 1;
         done
