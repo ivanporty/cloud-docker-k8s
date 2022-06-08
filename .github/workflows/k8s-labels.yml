@@ -33,8 +33,24 @@ jobs:
         # переадресация порта (фоновый режим, небольшое ожидание)
         kubectl port-forward service/time-service 8080 &
         sleep 5s
-        # запрос сервиса 7 раз, вызывается и канареечный выпуск, и обычный
+        # запрос сервиса 7 раз, вызывается или канареечный выпуск, или обычный (сетевое соединение стабильно)
         for i in {1..7}
         do
-          curl 0.0.0.0:8080/time; sleep 1;
+          curl -s 0.0.0.0:8080/time; sleep 1;
+        done
+    - name: Сине-зеленое развертывание на основе меток
+      run: |
+        # удалим предыдушие варианты time-service
+        kubectl delete deploy/time-service
+        kubectl delete svc/time-service
+        kubectl apply -f k8s/blue-green/blue/
+        # ожидание запуска
+        kubectl rollout status deployment/time-service --timeout 60s
+        # зеленое развертывание
+        kubectl apply -f k8s/blue-green/green/k8s-time-deploy-green.yaml 
+        kubectl rollout status deployment/time-service-green --timeout 60s
+        # текущая версия - синяя
+        for i in {1..7}
+        do
+          curl -s 0.0.0.0:8080/time; sleep 1;
         done
