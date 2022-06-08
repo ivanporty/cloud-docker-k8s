@@ -32,7 +32,7 @@ jobs:
         kubectl rollout status deployment/time-service-canary --timeout 60s
         # переадресация порта (фоновый режим, небольшое ожидание)
         kubectl port-forward service/time-service 8080 &
-        PID_FORWARDER=echo $!
+        export PID_FORWARDER=echo $!
         sleep 5s
         # запрос сервиса 7 раз, вызывается или канареечный выпуск, или обычный (сетевое соединение стабильно)
         for i in {1..7}
@@ -54,7 +54,7 @@ jobs:
         kubectl rollout status deployment/time-service-green --timeout 60s
         # переадресация порта
         kubectl port-forward service/time-service 8080 &
-        PID_FORWARDER=echo $!
+        export PID_FORWARDER=echo $!
         sleep 5s
         # текущая версия - синяя
         for i in {1..7}
