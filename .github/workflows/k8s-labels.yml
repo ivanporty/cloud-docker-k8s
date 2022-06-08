@@ -1,0 +1,86 @@
+name: Метки и аннотации K8s CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Канареечное развертывание на основе меток и множества экземпляров
+      run: |
+        cd time-service
+        # используем легковесный кластер kind для простых тестов
+        kind create cluster
+        # новаяv версия time-service - заново собирать не обязательно, так как сборка проверяется в time-service CI
+        # docker build . -t time-service:0.2.0
+        # развертывание time-service, в том числе канареечный 
+        kubectl apply -f k8s/
+        kubectl apply -f k8s/canary/
+        # ожидание запуска
+        kubectl rollout status deployment/time-service --timeout 60s
+        kubectl rollout status deployment/time-service-canary --timeout 60s
+        # переадресация порта (фоновый режим, небольшое ожидание)
+        kubectl port-forward service/time-service 8080 &
+        sleep 5s
+        # запрос сервиса 7 раз, вызывается или канареечный выпуск, или обычный (сетевое соединение стабильно)
+        for i in {1..7}
+        do
+          curl -sS 0.0.0.0:8080/time; sleep 1;
+        done
+    - name: Сине-зеленое развертывание на основе меток
+      run: |
+        cd time-service
+        # удалим предыдушие варианты time-service
+        kubectl delete deploy/time-service
+        kubectl delete svc/time-service
+        kubectl apply -f k8s/blue-green/blue/
+        # ожидание запуска
+        kubectl rollout status deployment/time-service --timeout 60s
+        # зеленое развертывание
+        kubectl apply -f k8s/blue-green/green/k8s-time-deploy-green.yaml 
+        kubectl rollout status deployment/time-service-green --timeout 60s
+        # переадресация порта на свободный 8081
+        kubectl port-forward service/time-service 8081:8080 &
+        sleep 5s
+        # текущая версия - синяя
+        for i in {1..7}
+        do
+          curl -sS 0.0.0.0:8081/time; sleep 1;
+        done
+        # переключение на зеленую версию
+        kubectl apply -f k8s/blue-green/green/k8s-time-svc-green.yaml 
+        # переадресация порта на свободный 8082
+        kubectl port-forward service/time-service 8082:8080 &
+        sleep 5s
+        # теперь текущая версия - зеленая
+        for i in {1..7}
+        do
+          curl -sS 0.0.0.0:8082/time; sleep 1;
+        done
+        # откат на синюю версию
+        kubectl apply -f k8s/blue-green/blue/k8s-time-svc-blue.yaml 
+        # переадресация порта на свободный 8083
+        kubectl port-forward service/time-service 8083:8080 &
+        sleep 5s
+        for i in {1..7}
+        do
+          curl -sS 0.0.0.0:8083/time; sleep 1;
+        done
+    - name: Вывод отсека из развертывания для отладки
+      run: |
+        POD=$(kubectl get pod -l app=time-service,release=canary -o jsonpath="{.items[0].metadata.name}")
+        kubectl label pod $POD debug=true app-
+        POD=$(kubectl get pod -l debug=true,release=canary -o jsonpath="{.items[0].metadata.name}")
+        kubectl describe pod/$POD
+        kubectl get pods
