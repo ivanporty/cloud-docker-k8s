@@ -32,12 +32,14 @@ jobs:
         kubectl rollout status deployment/time-service-canary --timeout 60s
         # переадресация порта (фоновый режим, небольшое ожидание)
         kubectl port-forward service/time-service 8080 &
+        PID_FORWARDER=echo $!
         sleep 5s
         # запрос сервиса 7 раз, вызывается или канареечный выпуск, или обычный (сетевое соединение стабильно)
         for i in {1..7}
         do
           curl -sS 0.0.0.0:8080/time; sleep 1;
         done
+        kill PID_FORWARDER
     - name: Сине-зеленое развертывание на основе меток
       run: |
         cd time-service
@@ -50,11 +52,13 @@ jobs:
         # зеленое развертывание
         kubectl apply -f k8s/blue-green/green/k8s-time-deploy-green.yaml 
         kubectl rollout status deployment/time-service-green --timeout 60s
-        # переадресация порта заново - при удалении сервиса переадресация закончилась
+        # переадресация порта
         kubectl port-forward service/time-service 8080 &
+        PID_FORWARDER=echo $!
         sleep 5s
         # текущая версия - синяя
         for i in {1..7}
         do
           curl -sS 0.0.0.0:8080/time; sleep 1;
         done
+        kill PID_FORWARDER
