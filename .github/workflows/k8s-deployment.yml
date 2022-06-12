@@ -30,3 +30,8 @@ jobs:
         kubectl port-forward service/time-service 8080 &
         sleep 5s
         curl -sS 0.0.0.0:8080/time
+        # обновление версии
+        kubectl apply -f k8s/update
+        kubectl rollout status deployment/time-service --timeout 60s
+        # проверка нового формата
+        curl -sS 0.0.0.0:8080/time
