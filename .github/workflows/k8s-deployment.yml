@@ -1,0 +1,32 @@
+name: Развертывания (deployment) K8s CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Канареечное развертывание на основе меток и множества экземпляров
+      run: |
+        cd time-service
+        # используем легковесный кластер kind для простых тестов
+        kind create cluster
+        # развертывание time-service 0.1.0 
+        kubectl apply -f k8s/
+        # ожидание запуска
+        kubectl rollout status deployment/time-service --timeout 60s
+        # переадресация порта (фоновый режим, небольшое ожидание)
+        kubectl port-forward service/time-service 8080 &
+        sleep 5s
+        curl -sS 0.0.0.0:8080/time
