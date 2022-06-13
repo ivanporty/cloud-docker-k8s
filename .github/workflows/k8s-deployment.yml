@@ -51,11 +51,18 @@ jobs:
         kubectl rollout history deploy time-service
         # развернем сломанную версию
         kubectl apply -f k8s/update/broken
-        # теперь развертывания ждать rollout status нельзя - оно сломано
+        # теперь развертывания ждать командой rollout status нельзя - оно сломано
         sleep 3s
         # сервис все равно работает, переадресация осталась с прошлого примера
         curl -sS 0.0.0.0:8080/time
-
-
-
-
+        # отсеки, работаюшие и сломанные
+        kubectl get pods
+        # история содержит все три развертывания
+        kubectl rollout history deploy time-service
+        # откат на рабочую версию
+        kubectl rollout undo deploy time-service
+        kubectl rollout status deployment/time-service --timeout 60s
+        # новая история
+        kubectl rollout history deploy time-service
+        # переадресация должна работать без перерыва так как отсеки остались теми же
+        curl -sS 0.0.0.0:8080/time
