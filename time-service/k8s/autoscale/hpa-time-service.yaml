@@ -1,7 +1,6 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  creationTimestamp: null
   name: time-service
 spec:
   maxReplicas: 3
