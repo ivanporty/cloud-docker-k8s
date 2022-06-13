@@ -22,7 +22,7 @@ jobs:
         cd time-service
         # используем легковесный кластер kind для простых тестов
         kind create cluster
-        # новаяv версия time-service - заново собирать не обязательно, так как сборка проверяется в time-service CI
+        # новая версия time-service - заново собирать не обязательно, так как сборка проверяется в time-service CI
         # docker build . -t time-service:0.2.0
         # развертывание time-service, в том числе канареечный 
         kubectl apply -f k8s/

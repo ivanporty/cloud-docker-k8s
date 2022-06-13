@@ -1,0 +1,93 @@
+name: Развертывания (deployment) K8s CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Обновление развертывания - переход на новую версию
+      run: |
+        cd time-service
+        # используем легковесный кластер kind для простых тестов
+        kind create cluster
+        # развертывание time-service 0.1.0 
+        kubectl apply -f k8s/
+        # ожидание запуска
+        kubectl rollout status deployment/time-service --timeout 60s
+        # переадресация порта (фоновый режим, небольшое ожидание)
+        kubectl port-forward service/time-service 8080 &
+        PID=$!
+        sleep 5s
+        curl -sS 0.0.0.0:8080/time
+        # надо отключить переадресацию во избежание ошибок при смене отсеков pod
+        kill -9 $PID
+        # обновление версии
+        kubectl apply -f k8s/update
+        kubectl rollout status deployment/time-service --timeout 60s
+        # так как проверки готовности в сервисе нет, нужна небольшое ожидание
+        sleep 3s
+        # снова переадресация
+        kubectl port-forward service/time-service 8080 &
+        PID=$!
+        sleep 5s
+        # проверка нового формата
+        curl -sS 0.0.0.0:8080/time
+        # переадресация остается работать
+    - name: История и откат развертываний
+      run: |
+        cd time-service
+        kubectl rollout history deploy time-service
+        # развернем сломанную версию
+        kubectl apply -f k8s/update/broken
+        # теперь развертывания ждать командой rollout status нельзя - оно сломано
+        sleep 3s
+        # сервис все равно работает, переадресация осталась с прошлого примера
+        curl -sS 0.0.0.0:8080/time
+        # отсеки, работаюшие и сломанные
+        kubectl get pods
+        # история содержит все три развертывания
+        kubectl rollout history deploy time-service
+        # откат на рабочую версию
+        kubectl rollout undo deploy time-service
+        kubectl rollout status deployment/time-service --timeout 60s
+        # новая история
+        kubectl rollout history deploy time-service
+        # переадресация должна работать без перерыва так как отсеки остались теми же
+        curl -sS 0.0.0.0:8080/time
+        # проверим объекты ReplicaSet
+        kubectl get replicasets
+    - name: Демонстрация стратегии rolling update
+      run: |
+        cd time-service
+        # удалим старое развертывание
+        kubectl delete deploy/time-service
+        # ожидание удаления, использовать команду rollout после удаления нельзя
+        sleep 3s
+        # развертывание версии 0.1.0
+        kubectl apply -f k8s/update/rolling-0.1.0
+        kubectl rollout status deployment/time-service --timeout 60s
+        # развертывание версии 0.2.0
+        kubectl apply -f k8s/update/rolling-0.2.0
+        # проверка статуса отсеков pods
+        for i in {1..7}
+        do
+          kubectl get pods; sleep 1;
+        done
+    - name: Автоматическое масштабирование
+      run: |
+        cd time-service
+        kubectl autoscale deployment/time-service --min=1 --max=3 --cpu-percent=80 --dry-run=client -o yaml
+        # kind не поддерживает autoscale, но должен принять объект HPA
+        kubectl apply -f k8s/autoscale/

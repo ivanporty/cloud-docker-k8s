@@ -34,9 +34,25 @@ spec:
       # список меток для нового отсека
       labels:
         app: time-service
-    # обновленная версия контейнера в отсеке    
+    # обновленная версия контейнера в отсеке, вместе с проверкой готовности
     spec:
       containers:
       - image: ivanporty/time-service:0.2.0
         name: time-service
+        readinessProbe:
+             httpGet:
+               path: /time
+               port: 8080
+             periodSeconds: 2
+             initialDelaySeconds: 5
+             failureThreshold: 2
+             successThreshold: 1
+        livenessProbe:
+             httpGet:
+               path: /time
+               port: 8080
+             periodSeconds: 2
+             initialDelaySeconds: 5
+             failureThreshold: 2
+             successThreshold: 1     
 
