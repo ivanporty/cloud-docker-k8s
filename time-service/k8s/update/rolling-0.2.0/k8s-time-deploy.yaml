@@ -47,4 +47,12 @@ spec:
              initialDelaySeconds: 5
              failureThreshold: 2
              successThreshold: 1
+        livenessProbe:
+             httpGet:
+               path: /time
+               port: 8080
+             periodSeconds: 2
+             initialDelaySeconds: 5
+             failureThreshold: 2
+             successThreshold: 1     
 
