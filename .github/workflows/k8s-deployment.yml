@@ -68,3 +68,4 @@ jobs:
         curl -sS 0.0.0.0:8080/time
         # проверим объекты ReplicaSet
         kubectl get replicasets
+
