@@ -68,12 +68,13 @@ jobs:
         curl -sS 0.0.0.0:8080/time
         # проверим объекты ReplicaSet
         kubectl get replicasets
-    - name: Демонстрация стратении rolling update
+    - name: Демонстрация стратегии rolling update
       run: |
         cd time-service
         # удалим старое развертывание
         kubectl delete deploy/time-service
-        kubectl rollout status deployment/time-service --timeout 60s
+        # ожидание удаления, использовать команду rollout после удаления нельзя
+        sleep 3s
         # развертывание версии 0.1.0
         kubectl apply -f k8s/update/rolling-0.1.0
         kubectl rollout status deployment/time-service --timeout 60s
