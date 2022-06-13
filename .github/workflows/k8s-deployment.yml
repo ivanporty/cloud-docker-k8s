@@ -66,3 +66,5 @@ jobs:
         kubectl rollout history deploy time-service
         # переадресация должна работать без перерыва так как отсеки остались теми же
         curl -sS 0.0.0.0:8080/time
+        # проверим объекты ReplicaSet
+        kubectl get replicasets
