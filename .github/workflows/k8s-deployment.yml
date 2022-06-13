@@ -36,11 +36,12 @@ jobs:
         # обновление версии
         kubectl apply -f k8s/update
         kubectl rollout status deployment/time-service --timeout 60s
+        sleep 3s
         # снова переадресация
-        kubectl port-forward service/time-service 8081:8080 &
+        kubectl port-forward service/time-service 8080 &
         PID=$!
         sleep 5s
         # проверка нового формата
-        curl -sS 0.0.0.0:8081/time
+        curl -sS 0.0.0.0:8080/time
         kill -9 $PID
 
