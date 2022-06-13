@@ -32,7 +32,7 @@ jobs:
         sleep 5s
         curl -sS 0.0.0.0:8080/time
         # надо отключить переадресацию во избежание ошибок при смене отсеков pod
-        kill $PID
+        kill -9 $PID
         # обновление версии
         kubectl apply -f k8s/update
         kubectl rollout status deployment/time-service --timeout 60s
@@ -42,5 +42,5 @@ jobs:
         sleep 5s
         # проверка нового формата
         curl -sS 0.0.0.0:8080/time
-        kill $PID
-        
+        kill -9 $PID
+
