@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Канареечное развертывание на основе меток и множества экземпляров
+    - name: Обновление развертывания - переход на новую версию
       run: |
         cd time-service
         # используем легковесный кластер kind для простых тестов
@@ -36,6 +36,7 @@ jobs:
         # обновление версии
         kubectl apply -f k8s/update
         kubectl rollout status deployment/time-service --timeout 60s
+        # так как проверки готовности в сервисе нет, нужна небольшое ожидание
         sleep 3s
         # снова переадресация
         kubectl port-forward service/time-service 8080 &
@@ -43,5 +44,18 @@ jobs:
         sleep 5s
         # проверка нового формата
         curl -sS 0.0.0.0:8080/time
-        kill -9 $PID
+        # переадресация остается работать
+    - name: История и откат развертываний
+      run: |
+        cd time-service
+        kubectl rollout history deploy time-service
+        # развернем сломанную версию
+        kubectl apply -f k8s/update/broken
+        # теперь развертывания ждать rollout status нельзя - оно сломано
+        sleep 3s
+        # сервис все равно работает, переадресация осталась с прошлого примера
+        curl -sS 0.0.0.0:8080/time
+
+
+
 
