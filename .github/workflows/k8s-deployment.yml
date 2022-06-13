@@ -68,4 +68,18 @@ jobs:
         curl -sS 0.0.0.0:8080/time
         # проверим объекты ReplicaSet
         kubectl get replicasets
-
+    - name: Демонстрация стратении rolling update
+      run: |
+        # удалим старое развертывание
+        kubectl delete -f k8s/
+        kubectl rollout status deployment/time-service --timeout 60s
+        # развертывание версии 0.1.0
+        kubectl apply -f k8s/update/rolling-0.1.0
+        kubectl rollout status deployment/time-service --timeout 60s
+        # развертывание версии 0.2.0
+        kubectl apply -f k8s/update/rolling-0.2.0
+        # проверка статуса отсеков pods
+        for i in {1..7}
+        do
+          kubectl get pods; sleep 1;
+        done

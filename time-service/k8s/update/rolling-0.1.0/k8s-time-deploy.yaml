@@ -13,7 +13,6 @@ metadata:
   name: time-service
 # Описание собственно правил развертывания контейнера
 # Вложенный объект DeploymentSpec
-# Вложенный объект DeploymentSpec
 spec:
   # Количество запущенных отсеков pods для масштабирования
   replicas: 3
