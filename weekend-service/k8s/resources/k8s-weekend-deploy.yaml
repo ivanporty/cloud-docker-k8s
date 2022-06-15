@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: weekend-service
+  name: weekend-service
+spec:
+  selector:
+    matchLabels:
+      app: weekend-service
+  template:
+    metadata:
+      labels:
+        app: weekend-service
+    spec:
+      containers:
+      - name: weekend-service
+        image: ivanporty/weekend-service:0.2.0
+        readinessProbe:
+             httpGet:
+               path: /ready
+               port: 5678
+             periodSeconds: 2
+             initialDelaySeconds: 5
+             failureThreshold: 2
+             successThreshold: 1
+        resources:
+          requests:
+            memory: "64M"
+            cpu: "1"
+          limits:
+            memory: "256M"
+            cpu: "2"
