@@ -20,3 +20,12 @@
 
 * Cборка и проверка микросервиса `weekend-service`, развертывание в локальном кластере, взаимодействие 2х микросервисов (Глава 7)
     * [![Сервисы K8s, weekend-service CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/svc-weekend-service.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/svc-weekend-service.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/svc-weekend-service.yml) 
+
+* Метки и аннотации Kubernetes. “Канарейки” (Глава 8)
+    * [![Метки и аннотации K8s CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-labels.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-labels.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/k8s-labels.yml) 
+    * 
+* Развертывания Deployment, стратегии развертывания (Глава 9)
+    * [![Развертывания (deployment) K8s CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-deployment.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-deployment.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/k8s-deployment.yml) 
+
+* Ресурсы Kubernetes - ресурсы Deployment, пространства имен Namespace (Глава 10)
+    * [![Ресурсы (pods/namespaces) K8s CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-resources.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-resources.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/k8s-resources.yml) 
