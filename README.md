@@ -23,7 +23,7 @@
 
 * Метки и аннотации Kubernetes. “Канарейки” (Глава 8)
     * [![Метки и аннотации K8s CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-labels.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-labels.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/k8s-labels.yml) 
-    * 
+
 * Развертывания Deployment, стратегии развертывания (Глава 9)
     * [![Развертывания (deployment) K8s CI](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-deployment.yml/badge.svg)](https://github.com/ivanporty/cloud-docker-k8s/actions/workflows/k8s-deployment.yml)  [(скрипт)](https://github.com/ivanporty/cloud-docker-k8s/blob/master/.github/workflows/k8s-deployment.yml) 
 
