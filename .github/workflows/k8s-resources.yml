@@ -33,6 +33,6 @@ jobs:
         # проверим работоспособность сервиса
         kubectl port-forward service/weekend-service 5678 &
         sleep 5s
-        curl 0.0.0.0:5678/weekend/Europe/Moscow
-        curl 0.0.0.0:5678/weekend/Asia/Tokyo
+        curl -sS 0.0.0.0:5678/weekend/Europe/Moscow
+        curl -sS 0.0.0.0:5678/weekend/Asia/Tokyo
 
