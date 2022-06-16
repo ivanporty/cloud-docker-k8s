@@ -26,8 +26,8 @@ spec:
              successThreshold: 1
         resources:
           requests:
-            memory: "64M"
+            memory: "128M"
             cpu: "1"
           limits:
-            memory: "256M"
+            memory: "512M"
             cpu: "2"

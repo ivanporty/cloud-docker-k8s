@@ -1,0 +1,38 @@
+name: Ресурсы (pods/namespaces) K8s CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+  - cron: "15 7 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Требования к ресурсам для развертываний Deployment
+      run: |
+        cd weekend-service
+        # используем легковесный кластер kind для простых тестов
+        kind create cluster
+        # развернем версию с объявленными ресурсами
+        kubectl apply -f k8s/resources/
+        kubectl rollout status deployment/weekend-service --timeout 60s
+        # сервис
+        kubectl apply -f k8s/k8s-weekend-svc.yaml
+        # weekend-service требует time-service
+        kubectl apply -f ../time-service/k8s/
+        kubectl rollout status deployment/time-service --timeout 60s
+        # проверим работоспособность сервиса
+        kubectl port-forward service/weekend-service 5678 &
+        sleep 5s
+        curl 0.0.0.0:5678/weekend/Europe/Moscow
+        curl 0.0.0.0:5678/weekend/Asia/Tokyo
+
