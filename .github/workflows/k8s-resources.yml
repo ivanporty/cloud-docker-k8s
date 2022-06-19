@@ -41,3 +41,11 @@ jobs:
         # в данный момент time-service уже развернут, одинаковые объекты невозможны
         # || true позволяет игнорировать ошибку команды
         kubectl create -f k8s/k8s-time-deploy.yaml || true
+        # пространство для разработчиков dev
+        kubectl create namespace dev
+        kubectl get namespaces
+        # теперь можно развернуть такой же time-service в dev
+        kubectl create -f k8s/k8s-time-deploy.yaml -n dev
+        kubectl rollout status deployment/time-service --timeout 60s -n dev
+        kubectl get deploy --namespace dev
+        
