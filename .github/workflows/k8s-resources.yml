@@ -52,4 +52,7 @@ jobs:
         kubectl delete namespace dev
         kubectl create namespace dev --dry-run=client -o yaml > dev-namespace.yaml
         kubectl apply -f dev-namespace.yaml
+        # ограничение ресурсов
+        kubectl apply -f k8s-ops/dev-resource-quota.yaml -n dev
+        kubectl describe namespace dev
 
