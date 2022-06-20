@@ -58,3 +58,6 @@ jobs:
     - name: Дополнительные контексты kubectl
       run: |
         kubectl config view
+        kubectl config set-context kind-dev --cluster=kind-kind --user=kind-kind --namespace=dev
+        kubectl config use-context kind-dev
+        kubectl get deploy
