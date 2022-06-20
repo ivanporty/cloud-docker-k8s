@@ -35,7 +35,7 @@ jobs:
         sleep 5s
         curl -sS 0.0.0.0:5678/weekend/Europe/Moscow
         curl -sS 0.0.0.0:5678/weekend/Asia/Tokyo
-    - name: Пространства имен Namespace и дополнительные контексты kubectl
+    - name: Пространства имен Namespace
       run: |
         cd time-service
         # в данный момент time-service уже развернут, одинаковые объекты невозможны
@@ -53,6 +53,10 @@ jobs:
         kubectl create namespace dev --dry-run=client -o yaml > dev-namespace.yaml
         kubectl apply -f dev-namespace.yaml
         # ограничение ресурсов
-        kubectl apply -f k8s-ops/dev-resource-quota.yaml -n dev
+        kubectl apply -f ../k8s-ops/dev-resource-quota.yaml -n dev
         kubectl describe namespace dev
+    - name: Дополнительные контексты kubectl
+      run: |
+      kubectl config view
+      
 
