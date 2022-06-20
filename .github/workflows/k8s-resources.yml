@@ -57,6 +57,4 @@ jobs:
         kubectl describe namespace dev
     - name: Дополнительные контексты kubectl
       run: |
-      kubectl config view
-      
-
+        kubectl config view
