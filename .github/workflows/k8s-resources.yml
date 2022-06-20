@@ -35,4 +35,29 @@ jobs:
         sleep 5s
         curl -sS 0.0.0.0:5678/weekend/Europe/Moscow
         curl -sS 0.0.0.0:5678/weekend/Asia/Tokyo
-
+    - name: Пространства имен Namespace
+      run: |
+        cd time-service
+        # в данный момент time-service уже развернут, одинаковые объекты невозможны
+        # || true позволяет игнорировать ошибку команды
+        kubectl create -f k8s/k8s-time-deploy.yaml || true
+        # пространство для разработчиков dev
+        kubectl create namespace dev
+        kubectl get namespaces
+        # теперь можно развернуть такой же time-service в dev
+        kubectl create -f k8s/k8s-time-deploy.yaml -n dev
+        kubectl rollout status deployment/time-service --timeout 60s -n dev
+        kubectl get deploy --namespace dev
+        # описание пространства имен в манифесте на основе dry-run
+        kubectl delete namespace dev
+        kubectl create namespace dev --dry-run=client -o yaml > dev-namespace.yaml
+        kubectl apply -f dev-namespace.yaml
+        # ограничение ресурсов
+        kubectl apply -f ../k8s-ops/dev-resource-quota.yaml -n dev
+        kubectl describe namespace dev
+    - name: Дополнительные контексты kubectl
+      run: |
+        kubectl config view
+        kubectl config set-context kind-dev --cluster=kind-kind --user=kind-kind --namespace=dev
+        kubectl config use-context kind-dev
+        kubectl get deploy
