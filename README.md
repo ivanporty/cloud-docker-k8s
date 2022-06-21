@@ -1,5 +1,7 @@
 ## Примеры Dockerfile, Jib, код микросервисов на Go и Java, манифесты Kubernetes для книги "Программирование Cloud Native. Микросервисы, Docker и Kubernetes"
 
+[Сайт книги "Программирование Cloud Native. Микросервисы, Docker и Kubernetes"](https://ipsoftware.ru/books/cloud-k8s/)
+
 В этом репозитории содержится код примеров книги, манифесты Kubernetes, команды Dockerfile. Команды, запускаемые в консоли (такие как вызовы `kubectl`), сохранены как часть системы непрерывной сборки GitHub Actions (конфигурация находится в `.github/workflows`, посмотреть запуски тестов - вкладка `Actions`)
 
 ### Непрерывная сборка (CI) кода и скриптов книги
