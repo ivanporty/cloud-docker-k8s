@@ -37,7 +37,7 @@ jobs:
         kubectl apply -f k8s/update
         kubectl rollout status deployment/time-service --timeout 60s
         # так как проверки готовности в сервисе нет, нужна небольшое ожидание
-        sleep 3s
+        sleep 5s
         # снова переадресация
         kubectl port-forward service/time-service 8080 &
         PID=$!
